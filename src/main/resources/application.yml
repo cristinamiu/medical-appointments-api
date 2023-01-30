@@ -1,0 +1,3 @@
+db.table:
+  doctor: "DOCTOR_TBL"
+  patient: "PATIENT_TBL"
