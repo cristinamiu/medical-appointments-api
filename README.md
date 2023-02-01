@@ -2,10 +2,6 @@
 
 A REST API application for medical appointments using Spring Boot and Hibernate.
 
-### Medical Database Schema
-
-![Alt Text](./images/diagram.png)
-
 ### REST Endpoints:
 
 #### Doctor
@@ -25,5 +21,10 @@ A REST API application for medical appointments using Spring Boot and Hibernate.
 - /api/doctor/delete/{id}/async
 
 > __Note:__
-> 
+>
 > The same endpoints for Nurse, Patient and Appointment
+
+### Medical Database Schema
+
+![Alt Text](./images/schema.svg)
+
