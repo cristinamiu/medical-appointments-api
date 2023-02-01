@@ -1,5 +1,6 @@
 package com.medical.api.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medical.api.dto.DoctorDto;
 import com.medical.api.entity.embeddable.Address;
@@ -98,6 +99,42 @@ class DoctorControllerTest {
 
     @Test
     void deleteDoctorById() throws Exception {
+        when(doctorService.deleteDoctorById(1)).thenReturn(RestExceptionHandler.buildResponseEntity("The record has been deleted", HttpStatus.OK));
+        mockMvc.perform(delete("/api/doctor/delete/1"))
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    void getDoctorByIdAsync() throws Exception {
+        given(doctorService.getDoctorById(1)).willReturn(doctorDto);
+
+        mockMvc.perform(get("/api/doctor/1"))
+                .andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    void addDoctorAsync() throws Exception {
+        given(doctorService.addDoctor(doctorDto)).willReturn(doctorDto);
+
+        mockMvc.perform(post("/api/doctor/add")
+                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(doctorDto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllDoctorsAsync() throws Exception {
+        when(doctorService.getAllDoctors()).thenReturn(doctorDtoList);
+
+        List<DoctorDto> response = doctorService.getAllDoctors();
+
+        mockMvc.perform(get("/api/doctor"))
+                .andExpect(status().isOk()).andReturn();
+
+        org.assertj.core.api.Assertions.assertThat(response).isEqualTo(doctorDtoList);
+    }
+
+    @Test
+    void deleteDoctorByIdAsync() throws Exception {
         when(doctorService.deleteDoctorById(1)).thenReturn(RestExceptionHandler.buildResponseEntity("The record has been deleted", HttpStatus.OK));
         mockMvc.perform(delete("/api/doctor/delete/1"))
                 .andExpect(status().isOk()).andReturn();

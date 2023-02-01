@@ -113,4 +113,42 @@ class DoctorServiceImplTest {
                 .isEqualTo(RestExceptionHandler.buildResponseEntity("The record has been deleted", HttpStatus.OK));
 
     }
+
+    @Test
+    void addDoctorAsync() {
+        when(doctorRepository.save(Mockito.any(Doctor.class))).thenReturn(doctor);
+
+        DoctorDto savedDoctor = doctorService.addDoctor(doctorDto);
+
+        org.assertj.core.api.Assertions.assertThat(savedDoctor).isEqualTo(doctor.toDto());
+    }
+
+    @Test
+    void getDoctorByIdAsync() {
+        when(doctorRepository.findById(1)).thenReturn(Optional.of(doctor));
+
+        DoctorDto response = doctorService.getDoctorById(1);
+
+        org.assertj.core.api.Assertions.assertThat(response).isEqualTo(doctor.toDto());
+    }
+
+    @Test
+    void getAllDoctorsAsync() {
+        when(doctorRepository.findAll()).thenReturn(doctorEntities);
+
+        List<DoctorDto> response = doctorService.getAllDoctors();
+
+        org.assertj.core.api.Assertions.assertThat(response).isEqualTo(doctorDtoList);
+    }
+
+    @Test
+    void deleteDoctorByIdAsync() {
+        when(doctorRepository.findById(1)).thenReturn(Optional.of(doctor));
+
+        ResponseEntity<Object> response = doctorService.deleteDoctorById(1);
+
+        org.assertj.core.api.Assertions.assertThat(response)
+                .isEqualTo(RestExceptionHandler.buildResponseEntity("The record has been deleted", HttpStatus.OK));
+
+    }
 }
